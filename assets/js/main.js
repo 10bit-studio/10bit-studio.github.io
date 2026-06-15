@@ -36,6 +36,9 @@ updateReveal();
 updateNav();
 
 const coverFiles = [
+  "SHOWREEL.jpg",
+  "BEAUTY.jpg",
+  "FOOT.jpg",
   "NOTHING.png",
   "BUBLE.jpg",
   "CASIO.png",
@@ -49,6 +52,9 @@ const coverFiles = [
 ];
 
 const videoFiles = [
+  "SHOWREEL.mp4",
+  "BEAUTY.mp4",
+  "FOOT.mp4",
   "CASIO.mp4",
   "COCTAIL.mp4",
   "LA_MORTADELA.mp4",
