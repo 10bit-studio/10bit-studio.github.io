@@ -4,47 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>10BIT — CASIO</title>
-  <style>
-    :root { --text:#0b0b0b; --muted:#6a6a6a; --line:#e7e7e7; --bg:#ffffff; }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; background:var(--bg); color:var(--text); }
-    .topbar { position: sticky; top: 0; background: var(--bg); border-bottom: 1px solid var(--line); z-index: 10; }
-    .topbar-inner { max-width: 1120px; margin: 0 auto; padding: 16px 18px; display:flex; justify-content: space-between; align-items:center; gap: 14px; }
-    a { color: inherit; text-decoration: none; }
-    a:hover { opacity: .65; }
-    .brand { font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: 14px; }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 24px 18px 70px; }
-    .title { margin: 0 0 6px; font-size: 22px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-    .meta { margin: 0 0 18px; font-size: 14px; color: var(--muted); }
-    .cover { width: 100%; height: auto; display:block; border: 1px solid var(--line); background:#f2f2f2; }
-    .block { margin-top: 18px; display:grid; gap: 14px; }
-    .video { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #000; border: 1px solid var(--line); }
-    .video video { position:absolute; inset:0; width:100%; height:100%; }
-    .note { border: 1px dashed var(--line); padding: 14px; color: var(--muted); font-size: 13px; }
-  </style>
+  <link rel="stylesheet" href="../../assets/css/site.css" />
 </head>
-<body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand"><a href="../../index.html#work">← Work</a></div>
-      <div class="brand">10BIT</div>
+<body class="page-project">
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="nav-left"><a href="../../index.html#work">← Work</a></div>
+      <div class="nav-center">10BIT</div>
+      <div class="nav-right"></div>
     </div>
   </header>
 
-  <main class="wrap">
-    <h1 class="title">CASIO</h1>
-    <p class="meta"></p>
+  <main class="project-main">
+    <header class="project-header">
+      <p class="project-kicker">Project</p>
+      <h1 class="project-title">CASIO</h1>
+      <p class="project-meta"></p>
+    </header>
 
-    <img class="cover" src="../../covers/CASIO.png" alt="CASIO cover" />
+    <figure class="project-cover">
+      <img src="../../covers/CASIO.png" alt="CASIO cover" />
+    </figure>
 
-    <div class="block">
-      <div class="video">
+    <div class="project-media">
+      <div class="video-frame">
         <video controls playsinline preload="metadata">
           <source src="https://github.com/10bit-studio/10bit-studio.github.io/raw/main/projects/CASIO.mp4" type="video/mp4" />
         </video>
-      </div>
-      <div class="note">
-        
       </div>
     </div>
   </main>

@@ -3,312 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="10BIT — креативная команда продуктовой рекламы: концепция, раскадровка, рендер, постпродакшен." />
   <title>10BIT</title>
-  <style>
-    :root { --text:#0b0b0b; --muted:#6a6a6a; --line:#e7e7e7; --bg:#ffffff; --tile-gap: 2px; --covers-reveal: 0; }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.55;
-    }
-    /* Wider layout so covers take more space */
-    .wrap { max-width: 1560px; margin: 0 auto; padding: 0 10px 70px; }
-
-    /* Top bar like reference */
-    .topbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 50;
-      background: var(--bg);
-      padding: 18px 10px;
-    }
-    .topbar-inner {
-      max-width: 1560px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 10px;
-    }
-    .topbar a { color: inherit; text-decoration: none; }
-    .topbar a:hover { opacity: .6; }
-    .topbar-left {
-      justify-self: start;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 14px;
-    }
-    .topbar-center {
-      justify-self: center;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      font-size: 20px;
-    }
-    .topbar-right { justify-self: end; font-size: 14px; color: transparent; user-select: none; }
-
-    .section { padding: 28px 0; }
-    .h {
-      font-size: 14px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-weight: 600;
-      margin: 0 0 14px;
-    }
-
-    /* Hero like reference */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 96px 0 34px;
-    }
-    .hero-inner {
-      width: 100%;
-      opacity: calc(1 - (var(--covers-reveal) * 0.88));
-      transform: translateY(calc(var(--covers-reveal) * -18px));
-      will-change: opacity, transform;
-    }
-    .hero-title {
-      margin: 0;
-      font-weight: 800;
-      letter-spacing: 0;
-      text-transform: none;
-      font-size: clamp(22px, 3.4vw, 42px);
-      line-height: 1.18;
-      max-width: 980px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .hero-subrow {
-      margin-top: 22px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      max-width: 740px;
-      margin-left: auto;
-      margin-right: auto;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .hero-subrow span { color: var(--muted); }
-    .hero-down {
-      margin-top: 44px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 54px;
-      height: 54px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      color: var(--text);
-      text-decoration: none;
-      transition: opacity .2s ease;
-    }
-    .hero-down:hover { opacity: .6; }
-    .hero-down svg { width: 18px; height: 18px; }
-
-    /* Cover grid like reference */
-    .grid-wrap { padding-top: 10px; }
-    .cover-grid {
-      /* Collage / Masonry */
-      column-count: 4;
-      column-gap: var(--tile-gap);
-      opacity: var(--covers-reveal);
-      transform: translateY(calc((1 - var(--covers-reveal)) * 70px));
-      will-change: opacity, transform;
-    }
-    .tile {
-      position: relative;
-      display: inline-block;
-      width: 100%;
-      background: #ffffff;
-      overflow: hidden;
-      text-decoration: none;
-      color: inherit;
-      break-inside: avoid;
-      margin: 0 0 var(--tile-gap);
-    }
-    .tile img {
-      width: 100%;
-      height: auto;
-      display: block;
-      background: #ffffff;
-      transition: opacity .18s ease;
-    }
-    .tile:hover img { opacity: .85; }
-    .tile--disabled { cursor: default; }
-    .tile--disabled img { opacity: 1; }
-    .tile-label {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-      opacity: 0;
-      transition: opacity .18s ease;
-    }
-    .tile:hover .tile-label { opacity: 1; }
-    .tile-label-inner {
-      display: inline-block;
-      width: min(78%, 420px);
-      text-align: center;
-      font-size: 14px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 800;
-      color: rgba(0,0,0,.88);
-      background: rgba(255,255,255,.82);
-      padding: 22px 18px;
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(0,0,0,.08);
-    }
-
-    /* Covers overlap the hero (naplyv) */
-    #work {
-      margin-top: -34vh;
-      padding-top: 34vh;
-      position: relative;
-      z-index: 5;
-    }
-
-    .project {
-      padding: 26px 0;
-      border-top: 1px solid var(--line);
-    }
-    .project-title {
-      margin: 0 0 6px;
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .project-meta {
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .media { display: grid; gap: 14px; }
-    .media img { width: 100%; height: auto; display: block; cursor: zoom-in; }
-
-    .video {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
-      background: #f4f4f4;
-    }
-    .video iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
-
-    .note {
-      border: 1px dashed var(--line);
-      padding: 14px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .footer {
-      margin-top: 34px;
-      padding-top: 18px;
-      border-top: 1px solid var(--line);
-      display: grid;
-      gap: 10px;
-    }
-    .contacts { display:flex; flex-wrap: wrap; gap: 10px 16px; }
-    .contacts a { color: inherit; text-decoration: none; font-weight: 600; font-size: 14px; }
-    .contacts a:hover { opacity: .6; }
-
-    .back { margin-top: 8px; }
-    .back a { color: inherit; text-decoration: none; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
-    .back a:hover { opacity: .6; }
-
-    /* Floating to-top button like reference */
-    .fab {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      width: 44px;
-      height: 44px;
-      border-radius: 999px;
-      background: rgba(0,0,0,.06);
-      border: 1px solid rgba(0,0,0,.10);
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      z-index: 60;
-      transition: opacity .2s ease, transform .2s ease;
-    }
-    .fab:hover { opacity: .7; transform: translateY(-1px); }
-    .fab svg { width: 18px; height: 18px; }
-
-    .lb {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,.97);
-      z-index: 9999;
-    }
-    .lb.on { display: flex; }
-    .lb img { max-width: 92vw; max-height: 92vh; object-fit: contain; }
-    .lb .x {
-      position: absolute;
-      top: 16px;
-      right: 18px;
-      font-size: 28px;
-      font-weight: 300;
-      line-height: 1;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    @media (max-width: 700px) {
-      .topbar { padding: 14px 14px; }
-      .wrap { padding: 0 14px 70px; }
-      .hero { padding-top: 86px; }
-      .hero-subrow { grid-template-columns: 1fr; }
-      .cover-grid { column-count: 2; }
-    }
-    @media (max-width: 1100px) {
-      .cover-grid { column-count: 3; }
-    }
-    @media (max-width: 520px) {
-      .cover-grid { column-count: 1; }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/site.css" />
 </head>
 <body>
-  <header class="topbar" aria-label="Top bar">
-    <div class="topbar-inner">
-      <div class="topbar-left"><a href="#work">Work</a></div>
-      <div class="topbar-center">10BIT</div>
-      <div class="topbar-right">.</div>
+
+  <header class="nav" aria-label="Навигация">
+    <div class="nav-inner">
+      <div class="nav-left"><a href="#work">Work</a></div>
+      <div class="nav-center">10BIT</div>
+      <div class="nav-right"><a href="https://t.me/lPalPaDDoS" target="_blank" rel="noopener noreferrer">Telegram</a></div>
     </div>
   </header>
 
   <div class="wrap" id="top">
-    <section class="hero" aria-label="Hero">
+    <section class="hero" aria-label="Главный экран">
       <div class="hero-inner">
-        <h1 class="hero-title">Мы — креативная команда, специализируемся на продуктовой рекламе, от концепции и раскадровки до финального рендера и постпродакшена</h1>
+        <p class="hero-eyebrow">Creative Studio</p>
+        <h1 class="hero-title">
+          Мы — креативная команда, специализируемся на <em>продуктовой рекламе</em>, от концепции и раскадровки до финального рендера и постпродакшена
+        </h1>
         <div class="hero-subrow">
-          <span>@lPalPaDDoS</span>
+          <a class="link-telegram" href="https://t.me/lPalPaDDoS" target="_blank" rel="noopener noreferrer">Telegram @lPalPaDDoS</a>
           <span>Наши работы ниже</span>
         </div>
-        <a class="hero-down" href="#work" aria-label="Scroll to work">
+        <a class="hero-down" href="#work" aria-label="К работам">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M6 9l6 6 6-6"></path>
           </svg>
@@ -317,144 +37,29 @@
     </section>
 
     <section class="section" id="work">
+      <p class="section-label">Selected Work</p>
       <div class="grid-wrap">
-        <div class="cover-grid" id="coverGrid" aria-label="Cover grid"></div>
-
-        
+        <div class="cover-grid" id="coverGrid" aria-label="Портфолио"></div>
       </div>
     </section>
 
     <footer class="footer" id="contacts">
-      <div class="h">Контакты</div>
+      <h2 class="footer-heading">Давайте<br><span>создадим</span> вместе</h2>
       <div class="contacts">
-        <a href="mailto:koranik29@gmail.com">Email: koranik29@gmail.com</a>
-        <a href="https://t.me/lPalPaDDoS" target="_blank" rel="noreferrer">Telegram: @lPalPaDDoS</a>
+        <a href="mailto:koranik29@gmail.com">koranik29@gmail.com</a>
+        <a class="link-telegram" href="https://t.me/lPalPaDDoS" target="_blank" rel="noopener noreferrer">Telegram @lPalPaDDoS</a>
       </div>
-      <div class="back"><a href="#top">↑ Back to Top</a></div>
+      <a class="back-link" href="#top">↑ Наверх</a>
     </footer>
   </div>
 
-  <button class="fab" type="button" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <button class="fab" type="button" aria-label="Наверх" onclick="window.scrollTo({top:0,behavior:'smooth'})">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M12 5l-6 6m6-6l6 6"></path>
-      <path d="M12 5v14"></path>
+      <path d="M12 19V5"></path>
+      <path d="M5 12l7-7 7 7"></path>
     </svg>
   </button>
 
-  <script>
-    // Scroll reveal: covers gradually "flow" onto the hero title
-    const heroEl = document.querySelector(".hero");
-    const updateReveal = () => {
-      if (!heroEl) return;
-      const rect = heroEl.getBoundingClientRect();
-      const vh = Math.max(1, window.innerHeight || 1);
-      // 0 when hero bottom is around 70% viewport, 1 when it reaches ~20%
-      const start = vh * 0.70;
-      const end = vh * 0.20;
-      const t = (start - rect.bottom) / (start - end);
-      const reveal = Math.min(1, Math.max(0, t));
-      document.documentElement.style.setProperty("--covers-reveal", reveal.toFixed(4));
-    };
-    window.addEventListener("scroll", updateReveal, { passive: true });
-    window.addEventListener("resize", updateReveal);
-    updateReveal();
-
-    // Covers list (auto-filled from your folder at build time in this repo)
-    const coverFiles = [
-      "NOTHING.png",
-      "BUBLE.jpg",
-      "CASIO.png",
-      "COCTAIL.png",
-      "LA MORTADELA.png",
-      "LAPOCHKA.png",
-      "MEDOLUBOV.png",
-      "NATURAL_CREAM.png",
-      "SHYUM.png",
-      "STOP_MOTION.png",
-    ];
-
-    // Videos list (from SAIT/projects). If a cover has no matching video => not clickable.
-    const videoFiles = [
-      "CASIO.mp4",
-      "COCTAIL.mp4",
-      "LA_MORTADELA.mp4",
-      "LAPOCHKA.mp4",
-      "MEDOLUBOV.mp4",
-      "NOTHING.mp4",
-      "STOP_MOTION.mp4",
-    ];
-
-    const escapeHtml = (str) =>
-      String(str)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
-    const titleFromFilename = (filename) => {
-      const noExt = filename.replace(/\.[^.]+$/, "");
-      return noExt
-        .replaceAll("_", " ")
-        .replace(/\btag\b/gi, "")
-        .replace(/\bтег\b/gi, "")
-        .replace(/\s+/g, " ")
-        .trim();
-    };
-
-    const keyNormalize = (s) => String(s).replace(/[\s_]+/g, "").toUpperCase();
-
-    const slugify = (title) => {
-      const s = title
-        .normalize("NFKD")
-        .toLowerCase()
-        .replace(/[_\s]+/g, "-")
-        .replace(/[^-\p{L}\p{N}]+/gu, "")
-        .replace(/-+/g, "-")
-        .replace(/^-+|-+$/g, "");
-      return s || "project";
-    };
-
-    const coverGrid = document.getElementById("coverGrid");
-    const videoKeySet = new Set(videoFiles.map((f) => keyNormalize(titleFromFilename(f))));
-
-    coverFiles.forEach((file) => {
-      const title = titleFromFilename(file);
-      const slug = slugify(title);
-      const hasVideo = videoKeySet.has(keyNormalize(title));
-
-      // Tile (clickable only if there is a matching video)
-      const tile = document.createElement(hasVideo ? "a" : "div");
-      tile.className = hasVideo ? "tile" : "tile tile--disabled";
-      if (hasVideo) tile.href = encodeURI(`p/${slug}/`);
-
-      const img = document.createElement("img");
-      img.loading = "lazy";
-      img.alt = `${title} cover`;
-      img.src = encodeURI(`covers/${file}`);
-
-      const label = document.createElement("span");
-      label.className = "tile-label";
-      const labelInner = document.createElement("span");
-      labelInner.className = "tile-label-inner";
-      labelInner.textContent = title;
-      label.appendChild(labelInner);
-
-      tile.appendChild(img);
-      tile.appendChild(label);
-      coverGrid.appendChild(tile);
-    });
-
-    // Smooth scroll for hero-down button
-    document.querySelectorAll('a[href="#work"]').forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const workSection = document.getElementById('work');
-        if (workSection) {
-          workSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    });
-  </script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
