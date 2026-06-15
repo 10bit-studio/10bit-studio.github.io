@@ -1,4 +1,4 @@
-/* 10BIT — site design system */
+/* Nikita Korablev — site design system */
 
 @import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap");
 
@@ -97,9 +97,9 @@ img { max-width: 100%; display: block; }
   justify-self: center;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 18px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-size: clamp(14px, 2.2vw, 18px);
+  letter-spacing: 0.1em;
+  text-transform: none;
 }
 
 .nav-right {

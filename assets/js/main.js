@@ -1,4 +1,4 @@
-// 10BIT — home page
+// Nikita Korablev — home page
 
 const heroEl = document.querySelector(".hero");
 const navEl = document.querySelector(".nav");
