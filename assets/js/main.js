@@ -42,7 +42,7 @@ updateReveal();
 updateNav();
 
 const coverFiles = [
-  "SHOWREEL.jpg",
+  "SHOWREEL_v2.jpg",
   "BEAUTY_v2.jpg",
   "FOOT.jpg",
   "NOTHING.png",
