@@ -43,7 +43,7 @@ updateNav();
 
 const coverFiles = [
   "SHOWREEL.jpg",
-  "BEAUTY_LAST.jpg",
+  "BEAUTY_v2.jpg",
   "FOOT.jpg",
   "NOTHING.png",
   "BUBLE.jpg",
@@ -81,12 +81,12 @@ const titleFromFilename = (filename) => {
 };
 
 const projectKeyFromCover = (filename) => {
-  const base = filename.replace(/\.[^.]+$/, "").replace(/_LAST$/i, "");
+  const base = filename.replace(/\.[^.]+$/, "").replace(/_(LAST|COVER|V\d+)$/i, "");
   return keyNormalize(titleFromFilename(`${base}.jpg`));
 };
 
 const displayTitleFromCover = (filename) => {
-  const base = filename.replace(/\.[^.]+$/, "").replace(/_LAST$/i, "");
+  const base = filename.replace(/\.[^.]+$/, "").replace(/_(LAST|COVER|V\d+)$/i, "");
   return titleFromFilename(`${base}.jpg`);
 };
 
