@@ -80,6 +80,16 @@ const titleFromFilename = (filename) => {
     .trim();
 };
 
+const projectKeyFromCover = (filename) => {
+  const base = filename.replace(/\.[^.]+$/, "").replace(/_LAST$/i, "");
+  return keyNormalize(titleFromFilename(`${base}.jpg`));
+};
+
+const displayTitleFromCover = (filename) => {
+  const base = filename.replace(/\.[^.]+$/, "").replace(/_LAST$/i, "");
+  return titleFromFilename(`${base}.jpg`);
+};
+
 const keyNormalize = (s) => String(s).replace(/[\s_]+/g, "").toUpperCase();
 
 const slugify = (title) => {
@@ -98,9 +108,9 @@ if (coverGrid) {
   const videoKeySet = new Set(videoFiles.map((f) => keyNormalize(titleFromFilename(f))));
 
   coverFiles.forEach((file) => {
-    const title = titleFromFilename(file);
+    const title = displayTitleFromCover(file);
     const slug = slugify(title);
-    const hasVideo = videoKeySet.has(keyNormalize(title));
+    const hasVideo = videoKeySet.has(projectKeyFromCover(file));
 
     const tile = document.createElement(hasVideo ? "a" : "div");
     tile.className = hasVideo ? "tile" : "tile tile--disabled";
