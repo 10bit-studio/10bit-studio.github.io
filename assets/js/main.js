@@ -43,7 +43,7 @@ updateNav();
 
 const coverFiles = [
   "SHOWREEL.jpg",
-  "BEAUTY.jpg",
+  "BEAUTY_LAST.jpg",
   "FOOT.jpg",
   "NOTHING.png",
   "BUBLE.jpg",
