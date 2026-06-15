@@ -4,6 +4,7 @@ const heroEl = document.querySelector(".hero");
 const navEl = document.querySelector(".nav");
 const fabEl = document.querySelector(".fab");
 const coverGridEl = document.getElementById("coverGrid");
+const workEl = document.getElementById("work");
 
 const updateReveal = () => {
   if (!heroEl) return;
@@ -14,7 +15,12 @@ const updateReveal = () => {
   const t = (start - rect.bottom) / (start - end);
   const reveal = Math.min(1, Math.max(0, t));
   document.documentElement.style.setProperty("--covers-reveal", reveal.toFixed(4));
-  if (coverGridEl) coverGridEl.classList.toggle("is-active", reveal > 0.12);
+
+  if (coverGridEl && workEl) {
+    const workRect = workEl.getBoundingClientRect();
+    const workVisible = workRect.top < vh * 0.92;
+    coverGridEl.classList.toggle("is-active", workVisible);
+  }
 };
 
 const updateNav = () => {

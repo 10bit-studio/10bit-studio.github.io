@@ -269,9 +269,9 @@ img { max-width: 100%; display: block; }
   column-count: 4;
   column-gap: 0;
   line-height: 0;
-  opacity: var(--covers-reveal);
-  transform: translateY(calc((1 - var(--covers-reveal)) * 80px));
-  will-change: opacity, transform;
+  opacity: 1;
+  transform: translateY(calc((1 - var(--covers-reveal)) * 32px));
+  will-change: transform;
   pointer-events: none;
 }
 
@@ -351,21 +351,27 @@ a.tile:hover .tile-label-inner { transform: translateY(0); }
 }
 
 /* Stagger reveal for tiles */
-.tile { opacity: 0; animation: tileIn 0.7s var(--ease) forwards; }
-.tile:nth-child(1)  { animation-delay: 0.05s; }
-.tile:nth-child(2)  { animation-delay: 0.10s; }
-.tile:nth-child(3)  { animation-delay: 0.15s; }
-.tile:nth-child(4)  { animation-delay: 0.20s; }
-.tile:nth-child(5)  { animation-delay: 0.25s; }
-.tile:nth-child(6)  { animation-delay: 0.30s; }
-.tile:nth-child(7)  { animation-delay: 0.35s; }
-.tile:nth-child(8)  { animation-delay: 0.40s; }
-.tile:nth-child(9)  { animation-delay: 0.45s; }
-.tile:nth-child(10) { animation-delay: 0.50s; }
+.tile {
+  opacity: 1;
+  animation: tileIn 0.6s var(--ease) both;
+}
+.tile:nth-child(1)  { animation-delay: 0.03s; }
+.tile:nth-child(2)  { animation-delay: 0.06s; }
+.tile:nth-child(3)  { animation-delay: 0.09s; }
+.tile:nth-child(4)  { animation-delay: 0.12s; }
+.tile:nth-child(5)  { animation-delay: 0.15s; }
+.tile:nth-child(6)  { animation-delay: 0.18s; }
+.tile:nth-child(7)  { animation-delay: 0.21s; }
+.tile:nth-child(8)  { animation-delay: 0.24s; }
+.tile:nth-child(9)  { animation-delay: 0.27s; }
+.tile:nth-child(10) { animation-delay: 0.30s; }
+.tile:nth-child(11) { animation-delay: 0.33s; }
+.tile:nth-child(12) { animation-delay: 0.36s; }
+.tile:nth-child(13) { animation-delay: 0.39s; }
 
 @keyframes tileIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { transform: translateY(16px); }
+  to   { transform: translateY(0); }
 }
 
 /* ── Footer ── */
@@ -575,6 +581,7 @@ a.tile:hover .tile-label-inner { transform: translateY(0); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .hero-down { animation: none; }
-  .tile { animation: none; opacity: 1; }
+  .tile { animation: none; }
   .tile img { transition: none; }
+  .cover-grid { transform: none; }
 }
