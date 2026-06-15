@@ -107,13 +107,14 @@ const coverGrid = document.getElementById("coverGrid");
 if (coverGrid) {
   const videoKeySet = new Set(videoFiles.map((f) => keyNormalize(titleFromFilename(f))));
 
-  coverFiles.forEach((file) => {
+  coverFiles.forEach((file, index) => {
     const title = displayTitleFromCover(file);
     const slug = slugify(title);
     const hasVideo = videoKeySet.has(projectKeyFromCover(file));
 
     const tile = document.createElement(hasVideo ? "a" : "div");
-    tile.className = hasVideo ? "tile" : "tile tile--disabled";
+    tile.className = hasVideo ? "tile reveal" : "tile tile--disabled reveal";
+    tile.style.transitionDelay = `${index * 0.045}s`;
     if (hasVideo) tile.href = encodeURI(`p/${slug}/`);
 
     const img = document.createElement("img");
@@ -133,6 +134,24 @@ if (coverGrid) {
     coverGrid.appendChild(tile);
   });
 }
+
+document.querySelectorAll(".tile.reveal").forEach((el) => {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    el.classList.add("is-visible");
+    return;
+  }
+  const tileObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        tileObserver.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.08, rootMargin: "0px 0px -4% 0px" }
+  );
+  tileObserver.observe(el);
+});
 
 document.querySelectorAll('a[href="#work"]').forEach((link) => {
   link.addEventListener("click", (e) => {
