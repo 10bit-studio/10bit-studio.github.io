@@ -45,16 +45,16 @@ const coverFiles = [
   "SHOWREEL_v2.jpg",
   "BEAUTY_v2.jpg",
   "FOOT.jpg",
-  "NOTHING.png",
+  "NOTHING.jpg",
   "BUBLE.jpg",
-  "CASIO.png",
-  "COCTAIL.png",
-  "LA MORTADELA.png",
-  "LAPOCHKA.png",
-  "MEDOLUBOV.png",
-  "NATURAL_CREAM.png",
-  "SHYUM.png",
-  "STOP_MOTION.png",
+  "CASIO.jpg",
+  "COCTAIL.jpg",
+  "LA MORTADELA.jpg",
+  "LAPOCHKA.jpg",
+  "MEDOLUBOV.jpg",
+  "NATURAL_CREAM.jpg",
+  "SHYUM.jpg",
+  "STOP_MOTION.jpg",
 ];
 
 const videoFiles = [
@@ -118,9 +118,11 @@ if (coverGrid) {
     if (hasVideo) tile.href = encodeURI(`p/${slug}/`);
 
     const img = document.createElement("img");
-    img.loading = "lazy";
+    img.decoding = "async";
+    img.loading = index < 4 ? "eager" : "lazy";
+    if (index < 4) img.fetchPriority = "high";
     img.alt = `${title} cover`;
-    img.src = encodeURI(`covers/${file}`);
+    img.src = encodeURI(`covers/thumbs/${file.replace(/\.[^.]+$/, ".jpg")}`);
 
     const label = document.createElement("span");
     label.className = "tile-label";
