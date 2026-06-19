@@ -351,25 +351,40 @@ img { max-width: 100%; display: block; }
   background: var(--surface);
   cursor: default;
   vertical-align: top;
+  content-visibility: auto;
+  contain-intrinsic-size: 360px 480px;
 }
 
 a.tile { cursor: pointer; }
+
+.tile-media {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--surface);
+  background-repeat: no-repeat;
+}
 
 .tile img {
   width: 100%;
   height: auto;
   display: block;
   vertical-align: top;
-  transition: transform 0.55s var(--ease), filter 0.4s;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease), transform 0.55s var(--ease), filter 0.4s;
   filter: brightness(0.92);
 }
 
-a.tile:hover img {
-  transform: scale(1.06);
+.tile img.is-loaded {
+  opacity: 1;
+}
+
+a.tile:hover img.is-loaded {
+  transform: scale(1.04);
   filter: brightness(1);
 }
 
-/* Scroll reveal */
+/* Scroll reveal (footer only) */
 .reveal {
   opacity: 0;
   transform: translateY(36px);
@@ -379,25 +394,6 @@ a.tile:hover img {
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
-}
-
-.tile.reveal {
-  opacity: 0;
-  transform: translateY(32px) scale(0.98);
-  transition:
-    opacity 0.75s var(--ease),
-    transform 0.75s var(--ease),
-    filter 0.4s;
-}
-
-.tile.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.tile.reveal.is-visible:hover img,
-.tile.reveal:hover img {
-  transform: scale(1.06);
 }
 
 .tile-label {
@@ -685,8 +681,8 @@ a.tile:hover .tile-label-inner { transform: translateY(0); }
   .hero-title em { animation: none; }
   .hero-down { animation: none; }
   .reveal,
-  .tile.reveal { opacity: 1; transform: none; transition: none; }
-  .tile img { transition: none; }
+  .tile img { transition: none; opacity: 1; }
+  .tile img.is-loaded { opacity: 1; }
   .cover-grid { transform: none; transition: none; }
   .nav-left a::after,
   .nav-right a::after { display: none; }

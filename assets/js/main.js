@@ -103,26 +103,99 @@ const slugify = (title) => {
   return s || "project";
 };
 
-const coverGrid = document.getElementById("coverGrid");
-if (coverGrid) {
+const createImageLoader = (maxConcurrent = 2) => {
+  const queue = [];
+  let active = 0;
+
+  const pump = () => {
+    while (active < maxConcurrent && queue.length) {
+      const job = queue.shift();
+      active += 1;
+      job(() => {
+        active -= 1;
+        pump();
+      });
+    }
+  };
+
+  return (job) => {
+    queue.push(job);
+    pump();
+  };
+};
+
+const enqueueImage = createImageLoader(2);
+
+const loadTileImage = (img, src, { priority = false } = {}) => {
+  const run = (done) => {
+    img.addEventListener(
+      "load",
+      () => {
+        img.classList.add("is-loaded");
+        done();
+      },
+      { once: true }
+    );
+    img.addEventListener("error", done, { once: true });
+    img.src = src;
+  };
+
+  if (priority) run(() => {});
+  else enqueueImage(run);
+};
+
+const initCoverGrid = async () => {
+  const coverGrid = document.getElementById("coverGrid");
+  if (!coverGrid) return;
+
+  let manifest = {};
+  try {
+    const response = await fetch("assets/covers-manifest.json");
+    if (response.ok) manifest = await response.json();
+  } catch {
+    manifest = {};
+  }
+
   const videoKeySet = new Set(videoFiles.map((f) => keyNormalize(titleFromFilename(f))));
+  const lazyObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const img = entry.target;
+        const src = img.dataset.src;
+        if (!src || img.dataset.loaded) return;
+        img.dataset.loaded = "1";
+        loadTileImage(img, src);
+        lazyObserver.unobserve(img);
+      });
+    },
+    { rootMargin: "280px 0px", threshold: 0.01 }
+  );
 
   coverFiles.forEach((file, index) => {
     const title = displayTitleFromCover(file);
     const slug = slugify(title);
     const hasVideo = videoKeySet.has(projectKeyFromCover(file));
+    const meta = manifest[file] || {};
+    const thumbSrc = encodeURI(`covers/${meta.thumb || `thumbs/${file}`}`);
 
     const tile = document.createElement(hasVideo ? "a" : "div");
-    tile.className = hasVideo ? "tile reveal" : "tile tile--disabled reveal";
-    tile.style.transitionDelay = `${index * 0.045}s`;
+    tile.className = hasVideo ? "tile" : "tile tile--disabled";
     if (hasVideo) tile.href = encodeURI(`p/${slug}/`);
+
+    const media = document.createElement("div");
+    media.className = "tile-media";
+    if (meta.w && meta.h) media.style.aspectRatio = `${meta.w} / ${meta.h}`;
+    if (meta.lqip) {
+      media.style.backgroundImage = `url("${meta.lqip}")`;
+      media.style.backgroundSize = "cover";
+      media.style.backgroundPosition = "center";
+    }
 
     const img = document.createElement("img");
     img.decoding = "async";
-    img.loading = index < 4 ? "eager" : "lazy";
-    if (index < 4) img.fetchPriority = "high";
     img.alt = `${title} cover`;
-    img.src = encodeURI(`covers/thumbs/${file.replace(/\.[^.]+$/, ".jpg")}`);
+    img.dataset.src = thumbSrc;
 
     const label = document.createElement("span");
     label.className = "tile-label";
@@ -131,29 +204,21 @@ if (coverGrid) {
     labelInner.textContent = title;
     label.appendChild(labelInner);
 
-    tile.appendChild(img);
+    media.appendChild(img);
+    tile.appendChild(media);
     tile.appendChild(label);
     coverGrid.appendChild(tile);
-  });
-}
 
-document.querySelectorAll(".tile.reveal").forEach((el) => {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    el.classList.add("is-visible");
-    return;
-  }
-  const tileObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
-        tileObserver.unobserve(entry.target);
-      });
-    },
-    { threshold: 0.08, rootMargin: "0px 0px -4% 0px" }
-  );
-  tileObserver.observe(el);
-});
+    if (index < 3) {
+      img.dataset.loaded = "1";
+      loadTileImage(img, thumbSrc, { priority: true });
+    } else {
+      lazyObserver.observe(img);
+    }
+  });
+};
+
+initCoverGrid();
 
 document.querySelectorAll('a[href="#work"]').forEach((link) => {
   link.addEventListener("click", (e) => {
