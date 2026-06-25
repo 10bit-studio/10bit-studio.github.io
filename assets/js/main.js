@@ -144,7 +144,8 @@ const loadTileImage = (img, src, { priority = false } = {}) => {
   else enqueueImage(run);
 };
 
-const VIDEO_BASE = "https://github.com/10bit-studio/10bit-studio.github.io/raw/main/projects/";
+const VIDEO_BASE =
+  "https://media.githubusercontent.com/media/10bit-studio/10bit-studio.github.io/main/projects/";
 
 const getVideoForCover = (file) => {
   const key = projectKeyFromCover(file);
@@ -193,12 +194,13 @@ const initVideoLightbox = () => {
       const videoEl = document.createElement("video");
       videoEl.controls = true;
       videoEl.playsInline = true;
-      videoEl.autoplay = true;
-      const source = document.createElement("source");
-      source.src = video.src;
-      source.type = "video/mp4";
-      videoEl.appendChild(source);
+      videoEl.preload = "auto";
+      videoEl.src = video.src;
+      videoEl.addEventListener("error", () => {
+        frame.innerHTML = `<p class="video-lightbox__error">Video failed to load. <a href="${video.src}" target="_blank" rel="noopener noreferrer">Open file</a></p>`;
+      });
       frame.appendChild(videoEl);
+      videoEl.play().catch(() => {});
     }
 
     lightbox.hidden = false;
