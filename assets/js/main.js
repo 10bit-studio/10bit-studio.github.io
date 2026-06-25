@@ -144,6 +144,81 @@ const loadTileImage = (img, src, { priority = false } = {}) => {
   else enqueueImage(run);
 };
 
+const VIDEO_BASE = "https://github.com/10bit-studio/10bit-studio.github.io/raw/main/projects/";
+
+const getVideoForCover = (file) => {
+  const key = projectKeyFromCover(file);
+  if (key === "NOTHING") {
+    return {
+      type: "vimeo",
+      src: "https://player.vimeo.com/video/1163975641?title=0&byline=0&portrait=0",
+    };
+  }
+  const match = videoFiles.find((f) => keyNormalize(titleFromFilename(f)) === key);
+  if (!match) return null;
+  return { type: "mp4", src: `${VIDEO_BASE}${match}` };
+};
+
+const initVideoLightbox = () => {
+  const lightbox = document.getElementById("videoLightbox");
+  const frame = document.getElementById("videoLightboxFrame");
+  const titleEl = document.getElementById("videoLightboxTitle");
+  if (!lightbox || !frame || !titleEl) return;
+
+  let lastFocus = null;
+
+  const closeLightbox = () => {
+    frame.innerHTML = "";
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    lightbox.hidden = true;
+    document.body.classList.remove("lightbox-open");
+    if (lastFocus) lastFocus.focus();
+  };
+
+  const openLightbox = (title, video) => {
+    if (!video) return;
+    lastFocus = document.activeElement;
+    titleEl.textContent = title;
+    frame.innerHTML = "";
+
+    if (video.type === "vimeo") {
+      const iframe = document.createElement("iframe");
+      iframe.src = `${video.src}&autoplay=1`;
+      iframe.allow = "autoplay; fullscreen; picture-in-picture";
+      iframe.allowFullscreen = true;
+      iframe.title = title;
+      frame.appendChild(iframe);
+    } else {
+      const videoEl = document.createElement("video");
+      videoEl.controls = true;
+      videoEl.playsInline = true;
+      videoEl.autoplay = true;
+      const source = document.createElement("source");
+      source.src = video.src;
+      source.type = "video/mp4";
+      videoEl.appendChild(source);
+      frame.appendChild(videoEl);
+    }
+
+    lightbox.hidden = false;
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.classList.add("lightbox-open");
+    requestAnimationFrame(() => lightbox.classList.add("is-open"));
+    lightbox.querySelector(".video-lightbox__close")?.focus();
+  };
+
+  lightbox.addEventListener("click", (e) => {
+    if (e.target.closest("[data-close]")) closeLightbox();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && lightbox.classList.contains("is-open")) closeLightbox();
+  });
+
+  return { openLightbox, closeLightbox };
+};
+
 const initCoverGrid = async () => {
   const coverGrid = document.getElementById("coverGrid");
   if (!coverGrid) return;
@@ -156,7 +231,6 @@ const initCoverGrid = async () => {
     manifest = {};
   }
 
-  const videoKeySet = new Set(videoFiles.map((f) => keyNormalize(titleFromFilename(f))));
   const lazyObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -172,16 +246,21 @@ const initCoverGrid = async () => {
     { rootMargin: "280px 0px", threshold: 0.01 }
   );
 
+  const { openLightbox } = initVideoLightbox();
+
   coverFiles.forEach((file, index) => {
     const title = displayTitleFromCover(file);
-    const slug = slugify(title);
-    const hasVideo = videoKeySet.has(projectKeyFromCover(file));
+    const video = getVideoForCover(file);
+    const hasVideo = Boolean(video);
     const meta = manifest[file] || {};
     const thumbSrc = encodeURI(`covers/${meta.thumb || `thumbs/${file}`}`);
 
-    const tile = document.createElement(hasVideo ? "a" : "div");
+    const tile = document.createElement(hasVideo ? "button" : "div");
     tile.className = hasVideo ? "tile" : "tile tile--disabled";
-    if (hasVideo) tile.href = encodeURI(`p/${slug}/`);
+    tile.type = hasVideo ? "button" : undefined;
+    if (hasVideo) {
+      tile.addEventListener("click", () => openLightbox(title, video));
+    }
 
     const media = document.createElement("div");
     media.className = "tile-media";

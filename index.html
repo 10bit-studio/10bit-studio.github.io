@@ -61,6 +61,15 @@
     </svg>
   </button>
 
+  <div class="video-lightbox" id="videoLightbox" hidden aria-hidden="true">
+    <div class="video-lightbox__backdrop" data-close aria-hidden="true"></div>
+    <div class="video-lightbox__panel" role="dialog" aria-modal="true" aria-labelledby="videoLightboxTitle">
+      <button class="video-lightbox__close" type="button" data-close aria-label="Close video">×</button>
+      <p class="video-lightbox__title" id="videoLightboxTitle"></p>
+      <div class="video-lightbox__frame" id="videoLightboxFrame"></div>
+    </div>
+  </div>
+
   <script src="assets/js/main.js"></script>
   <script src="assets/js/animations.js"></script>
 </body>
