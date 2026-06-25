@@ -144,7 +144,34 @@ const loadTileImage = (img, src, { priority = false } = {}) => {
   else enqueueImage(run);
 };
 
+const VIDEO_REPO = "10bit-studio/10bit-studio.github.io";
+const VIDEO_BRANCH = "main";
+const VIDEO_CDN = `https://media.githubusercontent.com/media/${VIDEO_REPO}/${VIDEO_BRANCH}/projects/`;
 const VIDEO_BASE = "projects/";
+
+const mp4Sources = (filename) => [
+  `${VIDEO_CDN}${filename}`,
+  `${VIDEO_BASE}${filename}`,
+  `https://github.com/${VIDEO_REPO}/raw/${VIDEO_BRANCH}/projects/${filename}`,
+];
+
+const applyLightboxFrameAspect = (frame, w, h) => {
+  if (!w || !h) return;
+  const portrait = h > w;
+  frame.classList.toggle("video-lightbox__frame--portrait", portrait);
+  frame.style.aspectRatio = `${w} / ${h}`;
+  frame.style.paddingBottom = "0";
+  frame.style.height = "auto";
+  if (portrait) {
+    frame.style.maxHeight = "min(85vh, 920px)";
+    frame.style.width = `min(96vw, calc(85vh * ${w} / ${h}))`;
+    frame.style.margin = "0 auto";
+  } else {
+    frame.style.maxHeight = "";
+    frame.style.width = "100%";
+    frame.style.margin = "";
+  }
+};
 
 const getVideoForCover = (file) => {
   const key = projectKeyFromCover(file);
@@ -158,12 +185,8 @@ const getVideoForCover = (file) => {
   if (!match) return null;
   return {
     type: "mp4",
-    src: `${VIDEO_BASE}${match}`,
-    sources: [
-      `${VIDEO_BASE}${match}`,
-      `https://media.githubusercontent.com/media/10bit-studio/10bit-studio.github.io/main/projects/${match}`,
-      `https://github.com/10bit-studio/10bit-studio.github.io/raw/main/projects/${match}`,
-    ],
+    file: match,
+    sources: mp4Sources(match),
   };
 };
 
@@ -184,13 +207,24 @@ const initVideoLightbox = () => {
     if (lastFocus) lastFocus.focus();
   };
 
-  const openLightbox = (title, video) => {
+  const openLightbox = (title, video, aspect = null) => {
     if (!video) return;
     lastFocus = document.activeElement;
     titleEl.textContent = title;
+    frame.className = "video-lightbox__frame";
     frame.innerHTML = "";
+    frame.style.aspectRatio = "";
+    frame.style.paddingBottom = "";
+    frame.style.height = "";
+    frame.style.maxHeight = "";
+    frame.style.width = "";
+    frame.style.margin = "";
+
+    const panel = lightbox.querySelector(".video-lightbox__panel");
 
     if (video.type === "vimeo") {
+      panel?.classList.remove("video-lightbox__panel--portrait");
+      if (aspect?.w && aspect?.h) applyLightboxFrameAspect(frame, aspect.w, aspect.h);
       const iframe = document.createElement("iframe");
       iframe.src = `${video.src}${video.src.includes("?") ? "&" : "?"}autoplay=1`;
       iframe.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
@@ -199,16 +233,51 @@ const initVideoLightbox = () => {
       iframe.title = title;
       frame.appendChild(iframe);
     } else {
+      const sources = video.sources || [];
+      if (aspect?.w && aspect?.h) {
+        applyLightboxFrameAspect(frame, aspect.w, aspect.h);
+        panel?.classList.toggle("video-lightbox__panel--portrait", aspect.h > aspect.w);
+      } else {
+        panel?.classList.remove("video-lightbox__panel--portrait");
+      }
+
+      frame.classList.add("is-loading");
+
       const videoEl = document.createElement("video");
       videoEl.controls = true;
       videoEl.playsInline = true;
       videoEl.preload = "auto";
-      videoEl.src = encodeURI(video.src);
-      videoEl.addEventListener("loadeddata", () => videoEl.play().catch(() => {}));
-      videoEl.addEventListener("error", () => {
-        frame.innerHTML = `<p class="video-lightbox__error">Video is still loading or unavailable. Try again in a moment.</p>`;
+
+      sources.forEach((url) => {
+        const source = document.createElement("source");
+        source.src = encodeURI(url);
+        source.type = "video/mp4";
+        videoEl.appendChild(source);
       });
+
+      videoEl.addEventListener("loadedmetadata", () => {
+        applyLightboxFrameAspect(frame, videoEl.videoWidth, videoEl.videoHeight);
+        panel?.classList.toggle(
+          "video-lightbox__panel--portrait",
+          videoEl.videoHeight > videoEl.videoWidth
+        );
+      }, { once: true });
+
+      videoEl.addEventListener("loadeddata", () => {
+        frame.classList.remove("is-loading");
+        videoEl.play().catch(() => {});
+      }, { once: true });
+
+      videoEl.addEventListener("error", () => {
+        requestAnimationFrame(() => {
+          if (videoEl.networkState !== HTMLMediaElement.NETWORK_NO_SOURCE) return;
+          frame.classList.remove("is-loading");
+          frame.innerHTML = `<p class="video-lightbox__error">Video is still loading or unavailable. Try again in a moment.</p>`;
+        });
+      });
+
       frame.appendChild(videoEl);
+      videoEl.load();
     }
 
     lightbox.hidden = false;
@@ -269,7 +338,7 @@ const initCoverGrid = async () => {
     tile.className = hasVideo ? "tile" : "tile tile--disabled";
     tile.type = hasVideo ? "button" : undefined;
     if (hasVideo) {
-      tile.addEventListener("click", () => openLightbox(title, video));
+      tile.addEventListener("click", () => openLightbox(title, video, meta));
     }
 
     const media = document.createElement("div");

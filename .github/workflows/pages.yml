@@ -25,6 +25,19 @@ jobs:
         with:
           lfs: true
 
+      - name: Verify LFS video files
+        run: |
+          git lfs pull
+          for f in projects/*.mp4; do
+            size=$(stat -c%s "$f")
+            if [ "$size" -lt 10000 ]; then
+              echo "::error::$f is only ${size} bytes — LFS file not smudged"
+              head -n 2 "$f"
+              exit 1
+            fi
+            echo "$f OK (${size} bytes)"
+          done
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
