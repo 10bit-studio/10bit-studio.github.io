@@ -144,8 +144,7 @@ const loadTileImage = (img, src, { priority = false } = {}) => {
   else enqueueImage(run);
 };
 
-const VIDEO_BASE =
-  "https://media.githubusercontent.com/media/10bit-studio/10bit-studio.github.io/main/projects/";
+const VIDEO_BASE = "projects/";
 
 const getVideoForCover = (file) => {
   const key = projectKeyFromCover(file);
@@ -157,7 +156,15 @@ const getVideoForCover = (file) => {
   }
   const match = videoFiles.find((f) => keyNormalize(titleFromFilename(f)) === key);
   if (!match) return null;
-  return { type: "mp4", src: `${VIDEO_BASE}${match}` };
+  return {
+    type: "mp4",
+    src: `${VIDEO_BASE}${match}`,
+    sources: [
+      `${VIDEO_BASE}${match}`,
+      `https://media.githubusercontent.com/media/10bit-studio/10bit-studio.github.io/main/projects/${match}`,
+      `https://github.com/10bit-studio/10bit-studio.github.io/raw/main/projects/${match}`,
+    ],
+  };
 };
 
 const initVideoLightbox = () => {
@@ -185,9 +192,10 @@ const initVideoLightbox = () => {
 
     if (video.type === "vimeo") {
       const iframe = document.createElement("iframe");
-      iframe.src = `${video.src}&autoplay=1`;
-      iframe.allow = "autoplay; fullscreen; picture-in-picture";
+      iframe.src = `${video.src}${video.src.includes("?") ? "&" : "?"}autoplay=1`;
+      iframe.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
       iframe.allowFullscreen = true;
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
       iframe.title = title;
       frame.appendChild(iframe);
     } else {
@@ -195,12 +203,12 @@ const initVideoLightbox = () => {
       videoEl.controls = true;
       videoEl.playsInline = true;
       videoEl.preload = "auto";
-      videoEl.src = video.src;
+      videoEl.src = encodeURI(video.src);
+      videoEl.addEventListener("loadeddata", () => videoEl.play().catch(() => {}));
       videoEl.addEventListener("error", () => {
-        frame.innerHTML = `<p class="video-lightbox__error">Video failed to load. <a href="${video.src}" target="_blank" rel="noopener noreferrer">Open file</a></p>`;
+        frame.innerHTML = `<p class="video-lightbox__error">Video is still loading or unavailable. Try again in a moment.</p>`;
       });
       frame.appendChild(videoEl);
-      videoEl.play().catch(() => {});
     }
 
     lightbox.hidden = false;
