@@ -272,7 +272,7 @@ const initVideoLightbox = () => {
         requestAnimationFrame(() => {
           if (videoEl.networkState !== HTMLMediaElement.NETWORK_NO_SOURCE) return;
           frame.classList.remove("is-loading");
-          frame.innerHTML = `<p class="video-lightbox__error">Video is still loading or unavailable. Try again in a moment.</p>`;
+          frame.innerHTML = `<p class="video-lightbox__error">${typeof window.t === "function" ? window.t("lightbox.error") : "Video is still loading or unavailable. Try again in a moment."}</p>`;
         });
       });
 
@@ -301,6 +301,8 @@ const initVideoLightbox = () => {
 const initCoverGrid = async () => {
   const coverGrid = document.getElementById("coverGrid");
   if (!coverGrid) return;
+
+  if (window.i18nReady) await window.i18nReady.catch(() => {});
 
   let manifest = {};
   try {

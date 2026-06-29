@@ -5,11 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nikita Korablev — NATURAL CREAM</title>
   <link rel="stylesheet" href="../../assets/css/site.css" />
+  <script>
+    (function () {
+      var l = sessionStorage.getItem("site-locale");
+      if (l === "ru" || l === "en") document.documentElement.lang = l;
+    })();
+  </script>
 </head>
 <body class="page-project">
   <header class="nav">
     <div class="nav-inner">
-      <div class="nav-left"><a href="../../index.html#work">← Work</a></div>
+      <div class="nav-left"><a href="../../index.html#work" data-i18n="nav.workBack">← Work</a></div>
       <div class="nav-center">Nikita Korablev</div>
       <div class="nav-right"></div>
     </div>
@@ -17,15 +23,16 @@
 
   <main class="project-main">
     <header class="project-header">
-      <p class="project-kicker">Project</p>
+      <p class="project-kicker" data-i18n="project.kicker">Project</p>
       <h1 class="project-title">NATURAL CREAM</h1>
-      <p class="project-meta">Video coming soon</p>
+      <p class="project-meta" data-i18n="project.soon">Video coming soon</p>
     </header>
 
     <figure class="project-cover">
       <img src="../../covers/NATURAL_CREAM.jpg" alt="NATURAL CREAM cover" loading="lazy" decoding="async" />
     </figure>
   </main>
+  <script src="../../assets/js/i18n.js"></script>
   <script src="../../assets/js/analytics.js"></script>
 </body>
 </html>

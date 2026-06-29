@@ -442,7 +442,7 @@ button.tile:focus-visible {
 
 .tile--disabled img { filter: brightness(0.75) saturate(0.6); }
 .tile--disabled::after {
-  content: "soon";
+  content: var(--badge-soon, "soon");
   position: absolute;
   top: 12px;
   right: 12px;
