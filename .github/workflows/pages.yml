@@ -1,51 +1,66 @@
-name: Deploy Pages with LFS videos
-
-on:
-  push:
-    branches: [main]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Checkout with Git LFS
-        uses: actions/checkout@v4
-        with:
-          lfs: true
-
-      - name: Verify LFS video files
-        run: |
-          git lfs pull
-          for f in projects/*.mp4; do
-            size=$(stat -c%s "$f")
-            if [ "$size" -lt 10000 ]; then
-              echo "::error::$f is only ${size} bytes — LFS file not smudged"
-              head -n 2 "$f"
-              exit 1
-            fi
-            echo "$f OK (${size} bytes)"
-          done
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+name: Deploy Pages with LFS videos
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout with Git LFS
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Verify LFS video files
+        run: |
+          git lfs pull
+          for f in projects/*.mp4; do
+            size=$(stat -c%s "$f")
+            if [ "$size" -lt 10000 ]; then
+              echo "::error::$f is only ${size} bytes — LFS file not smudged"
+              head -n 2 "$f"
+              exit 1
+            fi
+            echo "$f OK (${size} bytes)"
+          done
+
+      - name: Prepare site artifact
+        run: |
+          mkdir -p _site/projects
+          rsync -a \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '_site' \
+            --exclude 'projects/*.mp4' \
+            --exclude 'scripts' \
+            ./ _site/
+          # Pages has a ~100 MB per-file limit; videos are served via media.githubusercontent.com CDN.
+          printf '%s\n' \
+            'Videos are hosted via GitHub LFS CDN, not this Pages artifact.' \
+            > _site/projects/README.txt
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
