@@ -23,9 +23,16 @@ for src in sorted(covers.iterdir()):
         img = img.convert("RGB")
 
     thumb = img.copy()
-    thumb.thumbnail((560, 5600), Image.Resampling.LANCZOS)
+    thumb.thumbnail((840, 8400), Image.Resampling.LANCZOS)
     thumb_path = thumbs / f"{src.stem}.jpg"
-    thumb.save(thumb_path, "JPEG", quality=72, optimize=True)
+    thumb.save(thumb_path, "JPEG", quality=84, optimize=True, subsampling=0)
+
+    hero_dir = covers / "hero"
+    hero_dir.mkdir(exist_ok=True)
+    hero = img.copy()
+    hero.thumbnail((1440, 14400), Image.Resampling.LANCZOS)
+    hero_path = hero_dir / f"{src.stem}.jpg"
+    hero.save(hero_path, "JPEG", quality=90, optimize=True, subsampling=0)
 
     lq = thumb.copy()
     lq.thumbnail((24, 240), Image.Resampling.LANCZOS)
@@ -37,6 +44,7 @@ for src in sorted(covers.iterdir()):
         "w": thumb.width,
         "h": thumb.height,
         "thumb": f"thumbs/{src.stem}.jpg",
+        "hero": f"hero/{src.stem}.jpg",
         "lqip": lqip,
     }
 

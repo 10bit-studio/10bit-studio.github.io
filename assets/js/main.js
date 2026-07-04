@@ -337,7 +337,9 @@ const initCoverGrid = async () => {
     const video = getVideoForCover(file);
     const hasVideo = Boolean(video);
     const meta = manifest[file] || {};
-    const thumbSrc = encodeURI(`covers/${meta.thumb || `thumbs/${file}`}`);
+    const imgSrc = featured
+      ? encodeURI(`covers/${file}`)
+      : encodeURI(`covers/${meta.thumb || `thumbs/${file}`}`);
 
     const tile = document.createElement(hasVideo ? "button" : "div");
     tile.className = hasVideo ? "tile" : "tile tile--disabled";
@@ -359,7 +361,7 @@ const initCoverGrid = async () => {
     const img = document.createElement("img");
     img.decoding = "async";
     img.alt = `${title} cover`;
-    img.dataset.src = thumbSrc;
+    img.dataset.src = imgSrc;
 
     const label = document.createElement("span");
     label.className = "tile-label";
@@ -375,7 +377,7 @@ const initCoverGrid = async () => {
 
     if (index < 3) {
       img.dataset.loaded = "1";
-      loadTileImage(img, thumbSrc, { priority: true });
+      loadTileImage(img, imgSrc, { priority: true });
     } else {
       lazyObserver.observe(img);
     }
