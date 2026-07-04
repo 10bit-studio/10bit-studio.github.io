@@ -4,6 +4,7 @@ const heroEl = document.querySelector(".hero");
 const navEl = document.querySelector(".nav");
 const fabEl = document.querySelector(".fab");
 const coverGridEl = document.getElementById("coverGrid");
+const coverGridFeaturedEl = document.getElementById("coverGridFeatured");
 const workEl = document.getElementById("work");
 
 const updateReveal = () => {
@@ -20,6 +21,7 @@ const updateReveal = () => {
     const workRect = workEl.getBoundingClientRect();
     const workVisible = workRect.top < vh * 0.92;
     coverGridEl.classList.toggle("is-active", workVisible);
+    coverGridFeaturedEl?.classList.toggle("is-active", workVisible);
   }
 };
 
@@ -41,9 +43,9 @@ window.addEventListener("resize", () => {
 updateReveal();
 updateNav();
 
+const featuredCovers = ["SHOWREEL_v2.jpg", "CARTIER.jpg"];
+
 const coverFiles = [
-  "SHOWREEL_v2.jpg",
-  "CARTIER.jpg",
   "BEAUTY_v2.jpg",
   "FOOT.jpg",
   "NOTHING.jpg",
@@ -301,9 +303,6 @@ const initVideoLightbox = () => {
 };
 
 const initCoverGrid = async () => {
-  const coverGrid = document.getElementById("coverGrid");
-  if (!coverGrid) return;
-
   if (window.i18nReady) await window.i18nReady.catch(() => {});
 
   let manifest = {};
@@ -331,7 +330,9 @@ const initCoverGrid = async () => {
 
   const { openLightbox } = initVideoLightbox();
 
-  coverFiles.forEach((file, index) => {
+  const appendCoverTile = (container, file, index, { featured = false } = {}) => {
+    if (!container) return;
+
     const title = displayTitleFromCover(file);
     const video = getVideoForCover(file);
     const hasVideo = Boolean(video);
@@ -340,6 +341,7 @@ const initCoverGrid = async () => {
 
     const tile = document.createElement(hasVideo ? "button" : "div");
     tile.className = hasVideo ? "tile" : "tile tile--disabled";
+    if (featured) tile.classList.add("tile--featured");
     tile.type = hasVideo ? "button" : undefined;
     if (hasVideo) {
       tile.addEventListener("click", () => openLightbox(title, video, meta));
@@ -347,7 +349,7 @@ const initCoverGrid = async () => {
 
     const media = document.createElement("div");
     media.className = "tile-media";
-    if (meta.w && meta.h) media.style.aspectRatio = `${meta.w} / ${meta.h}`;
+    if (!featured && meta.w && meta.h) media.style.aspectRatio = `${meta.w} / ${meta.h}`;
     if (meta.lqip) {
       media.style.backgroundImage = `url("${meta.lqip}")`;
       media.style.backgroundSize = "cover";
@@ -369,7 +371,7 @@ const initCoverGrid = async () => {
     media.appendChild(img);
     tile.appendChild(media);
     tile.appendChild(label);
-    coverGrid.appendChild(tile);
+    container.appendChild(tile);
 
     if (index < 3) {
       img.dataset.loaded = "1";
@@ -377,6 +379,14 @@ const initCoverGrid = async () => {
     } else {
       lazyObserver.observe(img);
     }
+  };
+
+  featuredCovers.forEach((file, index) => {
+    appendCoverTile(coverGridFeaturedEl, file, index, { featured: true });
+  });
+
+  coverFiles.forEach((file, index) => {
+    appendCoverTile(coverGridEl, file, index + featuredCovers.length);
   });
 };
 
