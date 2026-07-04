@@ -26,6 +26,12 @@
       "badge.soon": "soon",
       "project.kicker": "Project",
       "project.soon": "Video coming soon",
+      "project.cartier.title": "Cartier — White Gold",
+      "project.cartier.meta": "Personal 3D study · Cinema 4D · Redshift · 7 days",
+      "project.cartier.lead":
+        "Self-initiated study of premium product forms and photoreal presentation. Cartier ring used as a visual benchmark.",
+      "project.cartier.disclaimer":
+        "Personal, non-commercial work. Not affiliated with, endorsed by, or commissioned by Cartier.",
     },
     ru: {
       "meta.description":
@@ -49,6 +55,12 @@
       "badge.soon": "скоро",
       "project.kicker": "Проект",
       "project.soon": "Видео скоро",
+      "project.cartier.title": "Cartier — White Gold",
+      "project.cartier.meta": "Личный 3D-стади · Cinema 4D · Redshift · 7 дней",
+      "project.cartier.lead":
+        "Авторский проект о премиальных формах и фотореалистичной подаче продукта. Кольцо Cartier — визуальный ориентир.",
+      "project.cartier.disclaimer":
+        "Личный некоммерческий проект. Не связан с Cartier и не является официальной работой бренда.",
     },
   };
 

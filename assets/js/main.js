@@ -43,6 +43,7 @@ updateNav();
 
 const coverFiles = [
   "SHOWREEL_v2.jpg",
+  "CARTIER.jpg",
   "BEAUTY_v2.jpg",
   "FOOT.jpg",
   "NOTHING.jpg",
@@ -59,6 +60,7 @@ const coverFiles = [
 
 const videoFiles = [
   "SHOWREEL.mp4",
+  "CARTIER.mp4",
   "BEAUTY.mp4",
   "FOOT.mp4",
   "CASIO.mp4",

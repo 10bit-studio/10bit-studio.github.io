@@ -745,6 +745,15 @@ body.lightbox-open {
 
 .project-meta:empty { display: none; }
 
+.project-lead {
+  margin: 0 0 24px;
+  max-width: 52ch;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text);
+  opacity: 0.88;
+}
+
 .project-cover {
   margin: 0;
   overflow: hidden;
