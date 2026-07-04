@@ -3,15 +3,17 @@ name: Deploy Pages with LFS videos
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
+  deployments: write
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -52,6 +54,36 @@ jobs:
           rm -f _site/projects/*.mp4
           echo "Videos are hosted via GitHub LFS CDN." > _site/projects/README.txt
           du -sh _site
+
+      - name: Close stuck Pages deployments
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployments = await github.rest.repos.listDeployments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              environment: "github-pages",
+              per_page: 20,
+            });
+            for (const deployment of deployments.data) {
+              const statuses = await github.rest.repos.listDeploymentStatuses({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                deployment_id: deployment.id,
+                per_page: 1,
+              });
+              const latest = statuses.data[0];
+              const state = latest?.state;
+              if (!latest || state === "pending" || state === "queued" || state === "in_progress") {
+                await github.rest.repos.createDeploymentStatus({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  deployment_id: deployment.id,
+                  state: "failure",
+                  description: "Closed stale Pages deployment",
+                });
+              }
+            }
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
