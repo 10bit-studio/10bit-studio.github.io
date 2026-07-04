@@ -1,4 +1,4 @@
-name: Deploy Pages with LFS videos
+name: Deploy site to GitHub Pages
 
 on:
   push:
@@ -6,21 +6,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-  deployments: write
+  contents: write
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout with Git LFS
         uses: actions/checkout@v4
@@ -34,13 +28,12 @@ jobs:
             size=$(stat -c%s "$f")
             if [ "$size" -lt 10000 ]; then
               echo "::error::$f is only ${size} bytes — LFS file not smudged"
-              head -n 2 "$f"
               exit 1
             fi
             echo "$f OK (${size} bytes)"
           done
 
-      - name: Prepare site artifact
+      - name: Prepare site
         run: |
           set -euo pipefail
           mkdir -p _site/projects
@@ -55,44 +48,10 @@ jobs:
           echo "Videos are hosted via GitHub LFS CDN." > _site/projects/README.txt
           du -sh _site
 
-      - name: Close stuck Pages deployments
-        uses: actions/github-script@v7
+      - name: Publish to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          script: |
-            const deployments = await github.rest.repos.listDeployments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              environment: "github-pages",
-              per_page: 20,
-            });
-            for (const deployment of deployments.data) {
-              const statuses = await github.rest.repos.listDeploymentStatuses({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                deployment_id: deployment.id,
-                per_page: 1,
-              });
-              const latest = statuses.data[0];
-              const state = latest?.state;
-              if (!latest || state === "pending" || state === "queued" || state === "in_progress") {
-                await github.rest.repos.createDeploymentStatus({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  deployment_id: deployment.id,
-                  state: "failure",
-                  description: "Closed stale Pages deployment",
-                });
-              }
-            }
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          force_orphan: true
