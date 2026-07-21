@@ -465,7 +465,7 @@ button.tile:focus-visible {
 
 .tile:not(.tile--disabled):hover .tile-label-inner { transform: translateY(0); }
 
-.tile--disabled img { filter: none; }
+.tile--disabled img { filter: brightness(1) saturate(1) !important; }
 .tile--disabled::after {
   content: var(--badge-soon, "soon");
   position: absolute;
