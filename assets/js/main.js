@@ -58,6 +58,8 @@ const coverFiles = [
   "NATURAL_CREAM.jpg",
   "SHYUM.jpg",
   "STOP_MOTION.jpg",
+  "ABSTRACT_COMPOSITION.jpg",
+  "NOTHING_GOLD.jpg",
 ];
 
 const videoFiles = [

@@ -32,6 +32,14 @@
         "Self-initiated study of premium product forms and photoreal presentation. Cartier ring used as a visual benchmark.",
       "project.cartier.disclaimer":
         "Personal, non-commercial work. Not affiliated with, endorsed by, or commissioned by Cartier.",
+      "project.abstractComposition.title": "Abstract Composition",
+      "project.abstractComposition.meta": "3D poly modeling · Cinema 4D · Redshift",
+      "project.abstractComposition.lead":
+        "Colorful abstract 3D composition exploring form, color, and texture through poly modeling techniques.",
+      "project.nothingGold.title": "Nothing Gold",
+      "project.nothingGold.meta": "Product 3D · Cinema 4D · Redshift",
+      "project.nothingGold.lead":
+        "Photoreal close-up render of a Nothing product detail in brushed gold finish.",
     },
     ru: {
       "meta.description":
@@ -61,6 +69,14 @@
         "Авторский проект о премиальных формах и фотореалистичной подаче продукта. Кольцо Cartier — визуальный ориентир.",
       "project.cartier.disclaimer":
         "Личный некоммерческий проект. Не связан с Cartier и не является официальной работой бренда.",
+      "project.abstractComposition.title": "Абстрактная композиция",
+      "project.abstractComposition.meta": "3D-полимоделирование · Cinema 4D · Redshift",
+      "project.abstractComposition.lead":
+        "Яркая абстрактная 3D-композиция: исследование формы, цвета и текстуры через полимоделирование.",
+      "project.nothingGold.title": "Nothing Gold",
+      "project.nothingGold.meta": "Продуктовый 3D · Cinema 4D · Redshift",
+      "project.nothingGold.lead":
+        "Фотореалистичный крупный план детали Nothing в отделке матовым золотом.",
     },
   };
 
