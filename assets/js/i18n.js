@@ -40,6 +40,10 @@
       "project.nothingGold.meta": "Product 3D · Cinema 4D · Redshift",
       "project.nothingGold.lead":
         "Photoreal close-up render of a Nothing product detail in brushed gold finish.",
+      "project.knifePlasticity.title": "Knife Plasticity",
+      "project.knifePlasticity.meta": "3D hard-surface modeling · Plasticity · Redshift",
+      "project.knifePlasticity.lead":
+        "Hard-surface knife study focused on clean forms, bevel transitions, and material response.",
     },
     ru: {
       "meta.description":
@@ -77,6 +81,10 @@
       "project.nothingGold.meta": "Продуктовый 3D · Cinema 4D · Redshift",
       "project.nothingGold.lead":
         "Фотореалистичный крупный план детали Nothing в отделке матовым золотом.",
+      "project.knifePlasticity.title": "Knife Plasticity",
+      "project.knifePlasticity.meta": "3D hard-surface моделирование · Plasticity · Redshift",
+      "project.knifePlasticity.lead":
+        "Hard-surface этюд ножа с акцентом на чистые формы, переходы фасок и поведение материалов.",
     },
   };
 
