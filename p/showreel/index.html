@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nikita Korablev — SHOWREEL</title>
+  <link rel="stylesheet" href="../../assets/css/site.css" />
+  <script>
+    (function () {
+      var l = sessionStorage.getItem("site-locale");
+      if (l === "ru" || l === "en") document.documentElement.lang = l;
+    })();
+  </script>
+</head>
+<body class="page-project">
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="nav-left"><a href="../../index.html#work" data-i18n="nav.workBack">← Work</a></div>
+      <div class="nav-center">Nikita Korablev</div>
+      <div class="nav-right"></div>
+    </div>
+  </header>
+
+  <main class="project-main">
+    <header class="project-header">
+      <p class="project-kicker" data-i18n="project.kicker">Project</p>
+      <h1 class="project-title">SHOWREEL</h1>
+      <p class="project-meta"></p>
+    </header>
+
+    <figure class="project-cover">
+      <img src="cover.jpg" alt="SHOWREEL cover" loading="lazy" decoding="async" />
+    </figure>
+
+    <div class="project-media">
+      <div class="video-frame">
+        <video controls playsinline preload="metadata">
+          <source src="../../projects/SHOWREEL.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </main>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/video-player.js"></script>
+  <script src="../../assets/js/analytics.js"></script>
+</body>
+</html>

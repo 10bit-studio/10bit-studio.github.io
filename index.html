@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Nikita Korablev — product advertising: concept, storyboard, render, and post-production." />
+  <title>Nikita Korablev</title>
+  <script>
+    (function () {
+      var l = sessionStorage.getItem("site-locale");
+      if (l === "ru" || l === "en") document.documentElement.lang = l;
+    })();
+  </script>
+  <link rel="preload" as="image" href="covers/SHOWREEL_v2.jpg" />
+  <link rel="preload" as="image" href="covers/CARTIER.jpg" />
+  <link rel="preload" as="image" href="covers/thumbs/BEAUTY_v2.jpg" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+</head>
+<body>
+
+  <header class="nav" data-i18n-aria="nav.navigation" aria-label="Navigation">
+    <div class="nav-inner">
+      <div class="nav-left"><a href="#work" data-i18n="nav.work">Work</a></div>
+      <div class="nav-center">Nikita Korablev</div>
+      <div class="nav-right"><a href="https://t.me/lPalPaDDoS" target="_blank" rel="noopener noreferrer">Telegram</a></div>
+    </div>
+  </header>
+
+  <div class="wrap" id="top">
+    <section class="hero" data-i18n-aria="nav.home" aria-label="Home">
+      <div class="hero-inner">
+        <p class="hero-eyebrow" data-i18n="hero.eyebrow">Product Advertising</p>
+        <h1 class="hero-title" data-i18n-html="hero.title">
+          I specialize in <em>product advertising</em> — from concept and storyboarding to final render and post-production
+        </h1>
+        <div class="hero-subrow">
+          <a class="link-telegram" href="https://t.me/lPalPaDDoS" target="_blank" rel="noopener noreferrer">Telegram @lPalPaDDoS</a>
+          <span data-i18n="hero.workBelow">My work below</span>
+        </div>
+        <a class="hero-down" href="#work" data-i18n-aria="hero.scrollWork" aria-label="Scroll to work">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="work">
+      <div class="grid-wrap">
+        <div class="cover-grid-featured" id="coverGridFeatured"></div>
+        <div class="cover-grid" id="coverGrid" data-i18n-aria="nav.portfolio" aria-label="Portfolio"></div>
+      </div>
+    </section>
+
+    <footer class="footer reveal" id="contacts">
+      <h2 class="footer-heading" data-i18n-html="footer.heading">Get in<br><span>touch</span></h2>
+      <div class="contacts">
+        <a href="mailto:koranik29@gmail.com">koranik29@gmail.com</a>
+        <a class="link-telegram" href="https://t.me/lPalPaDDoS" target="_blank" rel="noopener noreferrer">Telegram @lPalPaDDoS</a>
+      </div>
+      <a class="back-link" href="#top" data-i18n="footer.backTop">↑ Back to top</a>
+    </footer>
+  </div>
+
+  <button class="fab" type="button" data-i18n-aria="fab.backTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 19V5"></path>
+      <path d="M5 12l7-7 7 7"></path>
+    </svg>
+  </button>
+
+  <div class="video-lightbox" id="videoLightbox" hidden aria-hidden="true">
+    <div class="video-lightbox__backdrop" data-close aria-hidden="true"></div>
+    <div class="video-lightbox__panel" role="dialog" aria-modal="true" aria-labelledby="videoLightboxTitle">
+      <button class="video-lightbox__close" type="button" data-close data-i18n-aria="lightbox.close" aria-label="Close video">×</button>
+      <p class="video-lightbox__title" id="videoLightboxTitle"></p>
+      <div class="video-lightbox__frame" id="videoLightboxFrame"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/animations.js"></script>
+  <script src="assets/js/analytics.js"></script>
+</body>
+</html>
