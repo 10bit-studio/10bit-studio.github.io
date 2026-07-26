@@ -46,6 +46,7 @@ updateNav();
 const featuredCovers = ["SHOWREEL_v2.jpg", "CARTIER.jpg"];
 
 const coverFiles = [
+  "SHAKE.jpg",
   "KNIFE_PLASTICITY.jpg",
   "ABSTRACT_COMPOSITION.jpg",
   "NOTHING_GOLD.jpg",
@@ -66,6 +67,7 @@ const coverFiles = [
 const videoFiles = [
   "SHOWREEL.mp4",
   "CARTIER.mp4",
+  "SHAKE.mp4",
   "BEAUTY.mp4",
   "FOOT.mp4",
   "CASIO.mp4",

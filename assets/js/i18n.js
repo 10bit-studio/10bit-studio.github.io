@@ -44,6 +44,10 @@
       "project.knifePlasticity.meta": "3D hard-surface modeling · Plasticity · Redshift",
       "project.knifePlasticity.lead":
         "Hard-surface knife study focused on clean forms, bevel transitions, and material response.",
+      "project.shake.title": "Shake",
+      "project.shake.meta": "Motion design · Cinema 4D · After Effects",
+      "project.shake.lead":
+        "Short motion piece built around kinetic product energy and punchy camera shake.",
     },
     ru: {
       "meta.description":
@@ -85,6 +89,10 @@
       "project.knifePlasticity.meta": "3D hard-surface моделирование · Plasticity · Redshift",
       "project.knifePlasticity.lead":
         "Hard-surface этюд ножа с акцентом на чистые формы, переходы фасок и поведение материалов.",
+      "project.shake.title": "Shake",
+      "project.shake.meta": "Моушн-дизайн · Cinema 4D · After Effects",
+      "project.shake.lead":
+        "Короткий моушн-ролик с акцентом на кинетику продукта и резкий camera shake.",
     },
   };
 
